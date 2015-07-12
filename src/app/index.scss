@@ -1,0 +1,31 @@
+@import url(http://fonts.googleapis.com/css?family=Lora);
+
+/**
+ *  If you want to override some bootstrap variables, you have to change values here.
+ *  The list of variables are listed here bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_variables.scss
+ */
+
+$headings-font-family: "Lora";
+$icon-font-path: "../../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
+
+// bower:scss
+// endbower
+
+body {
+	padding-bottom: 70px !important;
+}
+
+footer {
+	background-color: #fff;
+}
+
+.container {
+	max-width: 730px;
+}
+
+/**
+ *  Do not remove this comments bellow. It's the markers used by gulp-inject to inject
+ *  all your sass files automatically
+ */
+// injector
+// endinjector
