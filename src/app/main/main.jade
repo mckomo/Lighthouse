@@ -1,64 +1,63 @@
-.container
-   .row
-      .col-lg-12
-         header.text-center
-            h1 Lighthouse 
-            h4 Navigating to the right torrents
+.container#wrap
+  .row
+    .col-lg-12
+      p.text-center
+        img(src="assets/images/lighthouse.png")
+      header.text-center
+        h1 Lighthouse
+        h4 Navigates to the right torrents
 
-         nav.navbar.text-center
-            form.form-inline
-               .form-group
-                  input(
-                     class="form-control" 
-                     placeholder="Torrent name" 
-                     ng-change="main.search()" 
-                     ng-model="main.query" 
-                     tabindex="999"
-                     autofocus)
-               .form-group
-                  select(
-                     class="form-control" 
-                     tabindex="999" 
-                     ng-model='main.category'
-                     ng-change="main.search()")
-                        optgroup(label="Category")
-                           option All
-                           option(
-                              ng-repeat="category in main.categories | orderBy:'toString()'" 
-                              ) {{ category }}
-         table(class="table table-striped" ng-show="main.torrents.length > 0")
-            thead
-               tr.text-nowrap
-                  th Category
-                  th Name
-                  th Size
-                  th Peers
-                  th Seeds
-                  th Upload date
-            tbody
-            tr(ng-repeat="(index, torrent) in main.torrents")
-               td
-                  span.label.label-info {{ torrent.category }}
-               td 
-                  a(
-                     href="{{ torrent.url }}" 
-                     title="Download torrent file {{ torrent.name }}"
-                     tabindex="0"
-                  ) {{ torrent.name }}
-               td
-                  {{ torrent.size | size }}
-               td
-                  span.label.label-warning {{ torrent.peerCount }}
-               td
-                  span.label.label-success {{ torrent.seedCount }}
-               td
-                  {{ torrent.uploadedAt | date }}
-
-
-footer.navbar-fixed-bottom
-   .container
-      .row
-         .col-lg-12
-            hr
-            p.text-right
-               a Mckomo
+      nav.navbar.text-center
+        form.form-inline
+          .form-group
+            input(
+            class="form-control"
+            placeholder="Torrent name"
+            ng-change="main.search()"
+            ng-model="main.query"
+            tabindex="999"
+            autofocus)
+          .form-group
+            select(
+            class='form-control'
+            tabindex='999'
+            ng-model='main.category'
+            ng-change="main.search()")
+              optgroup(label="Category")
+                option All
+                option(
+                ng-repeat="category in main.categories | orderBy:'toString()'"
+                ) {{ category }}
+      table(class="table table-condesendet table-striped" ng-show="main.torrents.length > 0")
+        thead
+          tr.text-nowrap
+            th Category
+            th Name
+            th Size
+            th Peers
+            th Seeds
+            th Upload date
+        tbody
+        tr(ng-repeat="(index, torrent) in main.torrents")
+          td
+            span.label.label-info {{ torrent.category }}
+          td
+            a(
+              href="{{ torrent.magnetLink }}"
+              title='Magnet link'
+            )
+              img(src='assets/images/magnet.gif')
+            span.spacer
+            a(
+              href="{{ torrent.magnetLink }}"
+              title="{{ torrent.name }}"
+              tabindex='0'
+            ) {{ torrent.name  }}
+          td
+            span {{ torrent.size | size }}
+          td
+            span.label.label-success {{ torrent.seedCount }}
+          td
+            span.label.label-warning {{ torrent.peerCount }}
+          td
+            time(datetime="{{ torrent.uploadedAt }}") {{ torrent.uploadedAt | date }}

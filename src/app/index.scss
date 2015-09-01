@@ -11,16 +11,32 @@ $icon-font-path: "../../bower_components/bootstrap-sass-official/assets/fonts/bo
 // bower:scss
 // endbower
 
+html,
 body {
-	padding-bottom: 70px !important;
+  height: 100%;
+  /* The html and body elements cannot have any padding or margin. */
 }
 
-footer {
-	background-color: #fff;
+body {
+  padding-top: $line-height-computed !important;
+}
+
+#wrap {
+  min-height: 100%;
+  height: 100% !important;
+  margin: 0 auto -60px;
+}
+
+#footer {
+  height: 60px;
 }
 
 .container {
-	max-width: 730px;
+	max-width: 940px;
+}
+
+.spacer {
+  padding: $padding-xs-horizontal;
 }
 
 /**

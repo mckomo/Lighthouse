@@ -4,4 +4,5 @@ bower_components/
 .idea/
 .tmp/
 .DS_Store
+.publish
 dist/

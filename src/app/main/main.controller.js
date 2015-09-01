@@ -1,3 +1,5 @@
+/*jslint browser: true, devel: true */
+
 var endpoint;
 var vm;
 
@@ -14,27 +16,47 @@ class MainController {
     this.category = 'All';
     this.categories = categories;
     this.torrents =  [];
+
   }
 
   search() {
 
-    if (this.query.length < 3) {
-      return; 
+    var currentQuery = this.query.slice(0);
+
+    if (currentQuery.length < 3) {
+      return;
     }
 
-    var query = {q: this.query, limit: 10};
+    setTimeout(function() {
 
-    if (isSupportedCategory(this.category)) { 
-      query.category = this.category.toLowerCase(); 
-    }
+      if (currentQuery !== vm.query) {
+        return;
+      }
 
-    endpoint
-      .getList(query)
-      .then(function(torrents){
-      	vm.torrents = torrents;
+      var query = buildQuery();
+
+      requestEndpoint(query).then(function(torrents){
+        vm.torrents = torrents;
       });
 
+    }, 350);
+
   }
+}
+
+function buildQuery() {
+
+  var query = {q: vm.query, limit: 10};
+
+  if (isSupportedCategory(vm.category)) {
+    query.category = vm.category.toLowerCase();
+  }
+
+  return query;
+}
+
+function requestEndpoint(query) {
+  return endpoint.getList(query);
 }
 
 function isSupportedCategory(category) {

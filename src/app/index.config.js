@@ -1,7 +1,7 @@
-function config ($logProvider) {
+function config ($logProvider, $compileProvider) {
   'ngInject';
-  // Enable log
   $logProvider.debugEnabled(true);
+  $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|magnet):/);
 }
 
 export default config;
