@@ -2,54 +2,129 @@
 
 var endpoint;
 var vm;
+var scope;
+var timeout;
 
-var categories = ['Movies', 'Applications', 'Music', 'XXX', 'Games'];
+var categories = ['Anime','Applications', 'Books', 'Games', 'Movies', 'Music', 'Other', 'TV', 'XXX'];
+var sortableFields = {
+  category: {label: 'Category'},
+  name: {label: 'Name'},
+  size: {label: 'Size'},
+  seedCount: {label: 'Seeds'},
+  peerCount: {label:'Peers'},
+  uploadedAt: {label: 'Upload date'}
+};
 
 class MainController {
 
-  constructor (Restangular) {
+  constructor (Restangular, $scope, $timeout) {
 
     vm = this;
+    scope = $scope;
+    timeout = $timeout;
     endpoint = Restangular.all('torrents');
 
-    this.query = '';
-    this.category = 'All';
+    this.query = {
+      phrase: '',
+      category: 'All',
+      sortBy: null,
+      sortOrder: null,
+    };
+
     this.categories = categories;
+    this.sortableFields = sortableFields;
     this.torrents =  [];
+    this.isSearching = false;
+
+    $scope.$watch('main.query', function(newQuery) {
+
+      var currentQuery = angular.copy(newQuery); // new object is required
+      vm.isSearching = true;
+
+      waitForUserInput(350, function() {
+
+        var isQueryUnchanged = angular.equals(currentQuery, vm.query);
+
+        if (isQueryUnchanged) {
+          search(currentQuery);
+        }
+
+      });
+
+    }, true);
 
   }
 
-  search() {
+  toggleSort(field) {
 
-    var currentQuery = this.query.slice(0);
+    var isSortFieldChanged = this.query.sortBy !== field;
+    var isOrderDesc = this.query.sortOrder === 'desc';
+    var isOrderAsc = this.query.sortOrder === 'asc';
 
-    if (currentQuery.length < 3) {
+    if (isSortFieldChanged) {
+      sortBy(field);
       return;
     }
 
-    setTimeout(function() {
+    if (isOrderAsc) {
+      sortBy(null);
+      return;
+    }
 
-      if (currentQuery !== vm.query) {
-        return;
-      }
-
-      var query = buildQuery();
-
-      requestEndpoint(query).then(function(torrents){
-        vm.torrents = torrents;
-      });
-
-    }, 350);
+    if (isOrderDesc) {
+      vm.query.sortOrder = 'asc';
+    }
 
   }
 }
 
-function buildQuery() {
+function sortBy(field) {
 
-  var query = {q: vm.query, limit: 10};
+  var isFieldNull = field === null;
 
-  if (isSupportedCategory(vm.category)) {
-    query.category = vm.category.toLowerCase();
+  vm.query.sortBy = field;
+  vm.query.sortOrder =  isFieldNull ? null : 'desc';
+
+}
+
+
+function search(query) {
+
+  if (query.phrase.length < 3) {
+    return;
+  }
+
+  var endpointQuery = buildEndpointQuery(query);
+
+  requestEndpoint(endpointQuery).then(function(torrents ){
+    vm.torrents = torrents;
+  }).then(function() {
+    vm.isSearching = false;
+  });
+
+}
+
+
+function waitForUserInput(timeMs, callback) {
+
+  timeout(callback, timeMs);
+
+}
+
+function buildEndpointQuery(queryParams) {
+
+  var query = {q: queryParams.phrase, limit: 20};
+
+  if (isSupportedCategory(queryParams.category)) {
+    query.category = queryParams.category.toLowerCase();
+  }
+
+  if (isSortableField(queryParams.sortBy)) {
+    query.sort_by = queryParams.sortBy;
+  }
+
+  if (queryParams.sortOrder !== null) {
+    query.sort_order = queryParams.sortOrder;
   }
 
   return query;
@@ -61,6 +136,10 @@ function requestEndpoint(query) {
 
 function isSupportedCategory(category) {
   return categories.indexOf(category) >= 0;
+}
+
+function isSortableField(fieldKey) {
+  return sortableFields.hasOwnProperty(fieldKey) >= 0;
 }
 
 export default MainController;

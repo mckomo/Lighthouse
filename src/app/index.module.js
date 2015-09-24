@@ -1,5 +1,5 @@
 import restangularConfig from './components/restangular/restangular.config';
-import sizeFilter from './components/torrents/size.filter';
+import sizeFilter from './components/units/size.filter.js';
 import config from './index.config';
 import routerConfig from './index.route';
 import runBlock from './index.run';
