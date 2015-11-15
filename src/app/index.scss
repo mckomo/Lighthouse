@@ -1,20 +1,27 @@
-@import url(http://fonts.googleapis.com/css?family=Lora);
+@import url(https://fonts.googleapis.com/css?family=Lora);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600);
+
 
 /**
  *  If you want to override some bootstrap variables, you have to change values here.
  *  The list of variables are listed here bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_variables.scss
  */
 
-$headings-font-family: "Lora";
+$grid-gutter-width: 20px !default;
+$font-family-sans-serif: "Open Sans" !default;
+$headings-font-family: "Lora" !default;
 $icon-font-path: "../../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
 
 // bower:scss
 // endbower
 
+.form-group {
+  position: relative;
+}
+
 html,
 body {
-  height: 100%;
-  /* The html and body elements cannot have any padding or margin. */
+  height: 100% !important;
 }
 
 body {
@@ -23,8 +30,8 @@ body {
 
 #wrap {
   min-height: 100%;
-  height: 100% !important;
-  margin: 0 auto -80px;
+  margin-bottom: -80px;
+  padding-bottom: 80px;
 }
 
 #footer {
@@ -34,7 +41,6 @@ body {
 .container {
 	max-width: 940px;
 }
-
 
 .overlay:before {
   content: '';

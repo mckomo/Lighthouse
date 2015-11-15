@@ -4,11 +4,10 @@ var endpoint;
 var vm;
 var scope;
 var timeout;
+var location;
 
 var categories = ['Anime','Applications', 'Books', 'Games', 'Movies', 'Music', 'Other', 'TV', 'XXX'];
 var sortableFields = {
-  category: {label: 'Category'},
-  name: {label: 'Name'},
   size: {label: 'Size'},
   seedCount: {label: 'Seeds'},
   peerCount: {label:'Peers'},
@@ -17,19 +16,21 @@ var sortableFields = {
 
 class MainController {
 
-  constructor (Restangular, $scope, $timeout) {
+  constructor (Restangular, $scope, $timeout, $location) {
 
     vm = this;
     scope = $scope;
     timeout = $timeout;
+    location = $location
     endpoint = Restangular.all('torrents');
 
-    this.query = {
+
+    this.query =  angular.extend({
       phrase: '',
       category: 'All',
       sortBy: null,
       sortOrder: null,
-    };
+    }, location.search());
 
     this.categories = categories;
     this.sortableFields = sortableFields;
@@ -46,6 +47,7 @@ class MainController {
         var isQueryUnchanged = angular.equals(currentQuery, vm.query);
 
         if (isQueryUnchanged) {
+          updateUrl(currentQuery)
           search(currentQuery);
         }
 
@@ -102,21 +104,24 @@ function search(query) {
     vm.isSearching = false;
   });
 
+  updateUrl(query);
+
 }
 
+function updateUrl(currentQuery) {
+    location.search(currentQuery);
+}
 
 function waitForUserInput(timeMs, callback) {
-
   timeout(callback, timeMs);
-
 }
 
 function buildEndpointQuery(queryParams) {
 
-  var query = {q: queryParams.phrase, limit: 20};
+  var query = {q: queryParams.phrase, limit: 100};
 
   if (isSupportedCategory(queryParams.category)) {
-    query.category = queryParams.category.toLowerCase();
+    query.category = queryParams.category;
   }
 
   if (isSortableField(queryParams.sortBy)) {
