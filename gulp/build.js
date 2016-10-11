@@ -65,9 +65,15 @@ gulp.task('html', ['inject', 'partials'], function () {
     .pipe($.size({ title: path.join(conf.paths.dist, '/'), showFiles: true }));
 });
 
+gulp.task('copy-bs-fonts', function(){
+  return gulp
+    .src(conf.wiredep.directory+'/bootstrap-sass-official/assets/fonts/bootstrap/*.{eot,svg,ttf,woff,woff2}')
+    .pipe(gulp.dest(path.join(conf.paths.dist, '/fonts/')));
+});
+
 // Only applies for fonts from bower dependencies
 // Custom fonts are handled by the "other" task
-gulp.task('fonts', function () {
+gulp.task('fonts', ['copy-bs-fonts'],function () {
   return gulp.src($.mainBowerFiles())
     .pipe($.filter('**/*.{eot,svg,ttf,woff,woff2}'))
     .pipe($.flatten())
