@@ -29,7 +29,7 @@
                     option(
                     ng-repeat="category in main.categories | orderBy:'toString()'"
                     ) {{ category }}
-      table(class="table table-condesendet table-striped" ng-show="main.torrents.length > 0")
+      table(class="table table-condesendet table-striped" ng-show="main.query.phrase")
         thead
           tr.text-nowrap
             th Category
@@ -62,3 +62,7 @@
               span.label.label-info {{ torrent.peerCount }}
             td
               time(datetime="{{ torrent.uploadedAt }}" title="{{ torrent.uploadedAt | date:'yyyy-MM-dd h:mm:ss' }}") {{ torrent.uploadedAt | date }}
+          tr(ng-show="main.torrents.length == 0")
+            td(class="text-center" colspan=6)
+              span No results
+    

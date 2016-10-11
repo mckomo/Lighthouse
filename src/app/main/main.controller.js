@@ -21,9 +21,8 @@ class MainController {
     vm = this;
     scope = $scope;
     timeout = $timeout;
-    location = $location
+    location = $location;
     endpoint = Restangular.all('torrents');
-
 
     this.query =  angular.extend({
       phrase: '',
@@ -47,7 +46,7 @@ class MainController {
         var isQueryUnchanged = angular.equals(currentQuery, vm.query);
 
         if (isQueryUnchanged) {
-          updateUrl(currentQuery)
+          updateUrl(currentQuery);
           search(currentQuery);
         }
 
