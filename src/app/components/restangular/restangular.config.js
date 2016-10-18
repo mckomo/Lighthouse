@@ -1,5 +1,5 @@
 function restangularConfig(RestangularProvider) {
-	RestangularProvider.setBaseUrl('http://light-tower.cloudapp.net/api/v1');
+	RestangularProvider.setBaseUrl('https://api.lighthouse.pm/');
 }
 
 export default restangularConfig;
