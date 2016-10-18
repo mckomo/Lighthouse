@@ -1,6 +1,8 @@
 # Lighthouse
 
-**[See Lighthouse online](http://mckomo.github.io/Lighthouse/)**
+[![Build Status](https://travis-ci.org/mckomo/Lighthouse-Web.svg?branch=master)](https://travis-ci.org/mckomo/Lighthouse-Web)
+
+**[See Lighthouse online](https://lighthouse.pm)**
 
 Noncommercial torrent repository build upon [Lighthouse Service](https://github.com/mckomo/Lighthouse-Service).
 
